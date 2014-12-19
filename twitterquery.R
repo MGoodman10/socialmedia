@@ -10,20 +10,19 @@ library(twitteR)
 library(ROAuth)
 library(RCurl)
 library(plyr)
+library(tm)
 
 # Verify the Twitter credential is working
-
-registerTwitterOAuth(twitCred)
-#  SHould be [1] TRUE
-
-
-# Load library and certification
+# Load library and cert
 load("twitteR_credentials")
 registerTwitterOAuth(twitCred)
 
+#  SHould be [1] TRUE
+
+
 # Say that we are interested in tweets regarding company Continental airlines
 # which has a twitter handler @United. We will proceed to collect 1.000 tweets.
-un.tweets = searchTwitter('@United',n=1000, cainfo="cacert.pem")
+un.tweets = searchTwitter('@bankofamerica',n=1000, cainfo="cacert.pem")
 
 # how many tweets have we collected ?
 length(un.tweets)
@@ -59,7 +58,7 @@ tr <-getTrends(woeid="23424977", period="weekly", date=(Sys.Date()-1),
 # text, for instance, by implementing functions included in R package (tm)
 #...let's get it started.
 
-library(tm)
+
 
 # Let's apply some transformations to our Twitter data set
 
@@ -84,24 +83,17 @@ data.corpus <- tm_map(data.corpus, removeWords, some_stopwords)
 
 # build a term-document matrix from a corpus
 data.corpus <- tm_map(data.corpus, PlainTextDocument)
-data.corpus <- TermDocumentMatrix(data.corpus)
+data.dtm <- TermDocumentMatrix(data.corpus)
 
 # some commands to view copora data
 # inspect the term-document matrix
-data.tm
+data.dtm
 
 
-# A term-document matrix (3053 terms, 1000 documents)
-
-
-# Non-/sparse entries: 9931/3043069
-# Sparsity : 100%
-# Maximal term length: 152 
-# Weighting : term frequency (tf)
 
 
 # View data after transformations
-inspect(data.corpus[1:1000])
+inspect(data.corpus[1:10])
 
 
 # view one single entry
